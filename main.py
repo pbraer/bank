@@ -135,13 +135,19 @@ class Bank(Frame):
         self.bread = img
         bread.place(x=691, y=403)
 
+        img = PhotoImage(file='addcard.png')
+        crd = Button(self.background, highlightthickness=0, activebackground='#5E8A49', bd=0, height=37, width=223,
+                       image=img, command=lambda: self.card_read())
+        self.crd = img
+        crd.place(x=50, y=430)
+
     def card_read(self):
         bgs = []
         for step in range(1, 146):
             lnk = str(step) + '.png'
             bgs.append(lnk)
 
-        def change(i=0):
+        def change(i=1):
             if i < 75:
                 img = bgs
                 img2 = PhotoImage(file=img[i])
@@ -156,9 +162,6 @@ class Bank(Frame):
         img2 = PhotoImage(file='pinwindow.png')
         self.background.configure(image=img2)
         self.background.image = img2
-
-        print_wind = Entry(self.background, bd=0, show='*', font='Arial 30')
-        print_wind.place(x=415, y=250, height=30, width=65)
 
         def print_digit(number):
             value = print_wind.get() + str(number)
@@ -254,6 +257,9 @@ class Bank(Frame):
                      command=lambda: clear())
         self.bcl = img
         bcl.place(x=492, y=443)
+
+        print_wind = Entry(self.background, bd=0, show='*', font='Arial 30')
+        print_wind.place(x=415, y=250, height=30, width=65)
 
     def main_page(self):
 
