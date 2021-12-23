@@ -130,8 +130,7 @@ class Bank(Frame):
         sb8.place(x=788, y=293)
 
         img = PhotoImage(file='pay.png')
-        bread = Button(self.background, highlightthickness=0, activebackground='#5E8A49', bd=0, height=151, width=115,
-                       image=img, command=lambda: self.card_read())
+        bread = Button(self.background, highlightthickness=0, activebackground='#5E8A49', bd=0, height=151, width=115, image=img)
         self.bread = img
         bread.place(x=691, y=403)
 
@@ -140,6 +139,7 @@ class Bank(Frame):
                        image=img, command=lambda: self.card_read())
         self.crd = img
         crd.place(x=50, y=430)
+
 
     def card_read(self):
         bgs = []
@@ -312,14 +312,12 @@ class Bank(Frame):
         img3 = PhotoImage(file='showbalace.png')
         self.background.configure(image=img3)
         self.background.image = img3
-
-        def close():
-            balance_info.place_forget()
-            self.main_page()
-
         balance_info = Label(self.background, bg='#F8F8F8', highlightthickness=0, text=str(Bank.balance) + ' руб.',
                              font='Arial 15')
         balance_info.place(x=370, y=176)
+        def close():
+            balance_info.place_forget()
+            self.main_page()
 
         img = PhotoImage(file='SB.png')
         sb4 = Button(self.background, highlightthickness=0, bd=0, height=30, width=55, image=img,
@@ -357,9 +355,24 @@ class Bank(Frame):
         sb7.place(x=788, y=244)
 
     def make_deposit(self):
-        img4 = PhotoImage(file='makedep.png')
-        self.background.configure(image=img4)
-        self.background.image = img4
+        bgs = []
+        for step in range(1, 37):
+            lnk = 'load' + str(step) + '.png'
+            bgs.append(lnk)
+
+        def loading(i=1):
+            if i < 35:
+                img0 = bgs
+                img7 = PhotoImage(file=img0[i])
+                self.background.configure(image=img7)
+                self.background.image = img7
+                self.background.after(1, loading, i + 1)
+            else:
+                img4 = PhotoImage(file='makedep.png')
+                self.background.configure(image=img4)
+                self.background.image = img4
+        loading()
+
         print_wind = Entry(self.background, bd=0, font='Arial 20')
         print_wind.place(x=290, y=190, height=30, width=300)
 
@@ -385,6 +398,37 @@ class Bank(Frame):
             value = ''
             print_wind.delete(0, END)
             print_wind.insert(0, value)
+            print_wind.place_forget()
+
+
+            def loading(i=0):
+                bgs = []
+                for step in range(1, 36):
+                    lnk = 'load' + str(step) + '.png'
+                    bgs.append(lnk)
+                if i < 30:
+                    img0 = bgs
+                    img7 = PhotoImage(file=img0[i])
+                    self.background.configure(image=img7)
+                    self.background.image = img7
+                    self.background.after(1, loading, i + 1)
+                else:
+                    doing()
+            loading()
+
+            def doing(i=1):
+                bgs = []
+                for step in range(1, 7):
+                    lnk = 'loaddone.png'
+                    bgs.append(lnk)
+                if i < 5:
+                    img5 = bgs
+                    img6 = PhotoImage(file=img5[i])
+                    self.background.configure(image=img6)
+                    self.background.image = img6
+                    self.background.after(1, doing, i + 1)
+                else:
+                    self.make_deposit()
 
         def close():
             print_wind.place_forget()
@@ -494,9 +538,24 @@ class Bank(Frame):
         sb7.place(x=788, y=244)
 
     def make_money(self):
-        img4 = PhotoImage(file='makemon.png')
-        self.background.configure(image=img4)
-        self.background.image = img4
+        bgs = []
+        for step in range(1, 37):
+            lnk = 'load' + str(step) + '.png'
+            bgs.append(lnk)
+
+        def loading(i=1):
+            if i < 34:
+                img0 = bgs
+                img7 = PhotoImage(file=img0[i])
+                self.background.configure(image=img7)
+                self.background.image = img7
+                self.background.after(1, loading, i + 1)
+            else:
+                img4 = PhotoImage(file='makemon.png')
+                self.background.configure(image=img4)
+                self.background.image = img4
+        loading()
+
         print_wind = Entry(self.background, bd=0, font='Arial 20')
         print_wind.place(x=290, y=190, height=30, width=300)
 
@@ -520,9 +579,38 @@ class Bank(Frame):
             sum = int(print_wind.get())
             if sum <= Bank.balance:
                 Bank.balance -= sum
-                value = ''
-                print_wind.delete(0, END)
-                print_wind.insert(0, value)
+                bgs = []
+                for step in range(1, 37):
+                    lnk = 'load' + str(step) + '.png'
+                    bgs.append(lnk)
+
+                def loading(i=1):
+                    if i < 34:
+                        img0 = bgs
+                        img7 = PhotoImage(file=img0[i])
+                        self.background.configure(image=img7)
+                        self.background.image = img7
+                        self.background.after(1, loading, i + 1)
+                    else:
+                        doing()
+
+                loading()
+
+                def doing(i=1):
+                    bgs = []
+                    for step in range(1, 7):
+                        lnk = 'loaddone.png'
+                        bgs.append(lnk)
+                    if i < 6:
+                        img5 = bgs
+                        img6 = PhotoImage(file=img5[i])
+                        self.background.configure(image=img6)
+                        self.background.image = img6
+                        self.background.after(1, doing, i + 1)
+                    else:
+                        print_wind.place_forget()
+                        self.make_money()
+
             else:
                 Bank.balance = 0
                 value = ''
@@ -743,6 +831,29 @@ class Bank(Frame):
         sb7.place(x=788, y=244)
 
     def sms(self):
+        bgs = []
+        for step in range(1, 37):
+            lnk = 'load' + str(step) + '.png'
+            bgs.append(lnk)
+
+        def loading(i=1):
+            if i < 34:
+                img0 = bgs
+                img7 = PhotoImage(file=img0[i])
+                self.background.configure(image=img7)
+                self.background.image = img7
+                self.background.after(1, loading, i + 1)
+            else:
+                if Bank.SMS == False:
+                    img3 = PhotoImage(file='smsoff.png')
+                    self.background.configure(image=img3)
+                    self.background.image = img3
+                elif Bank.SMS == True:
+                    img3 = PhotoImage(file='smson.png')
+                    self.background.configure(image=img3)
+                    self.background.image = img3
+
+        loading()
         if Bank.SMS == False:
             img3 = PhotoImage(file='smsoff.png')
             self.background.configure(image=img3)
@@ -784,10 +895,6 @@ class Bank(Frame):
             self.sb5 = img
             sb5.place(x=788, y=146)
 
-            sb6 = Button(self.background, highlightthickness=0, bd=0, height=30, width=55, image=img)
-            self.sb6 = img
-            sb6.place(x=788, y=195)
-
             sb7 = Button(self.background, highlightthickness=0, bd=0, height=30, width=55, image=img)
             self.sb7 = img
             sb7.place(x=788, y=244)
@@ -816,6 +923,26 @@ class Bank(Frame):
                          command=lambda: quit())
             self.sb8 = img
             sb8.place(x=788, y=293)
+
+            sb1 = Button(self.background, highlightthickness=0, bd=0, height=30, width=54, image=img)
+            self.sb1 = img
+            sb1.place(x=55, y=146)
+
+            sb2 = Button(self.background, highlightthickness=0, bd=0, height=30, width=55, image=img)
+            self.sb2 = img
+            sb2.place(x=55, y=195)
+
+            sb3 = Button(self.background, highlightthickness=0, bd=0, height=30, width=55, image=img)
+            self.sb3 = img
+            sb3.place(x=55, y=244)
+
+            sb5 = Button(self.background, highlightthickness=0, bd=0, height=30, width=54, image=img)
+            self.sb5 = img
+            sb5.place(x=788, y=146)
+
+            sb7 = Button(self.background, highlightthickness=0, bd=0, height=30, width=55, image=img)
+            self.sb7 = img
+            sb7.place(x=788, y=244)
 
     def pin_checking(self):
         img2 = PhotoImage(file='pinwindow.png')
